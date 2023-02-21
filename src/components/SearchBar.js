@@ -1,31 +1,42 @@
-import React, { useState } from "react";
+import React, { Component } from "react";
 
-const SearchBar = ({ memeData, setFilteredMemeData }) => {
-  const [searchInputVal, setSearchInputVal] = useState("");
+class SearchBar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchInputVal: "",
+    };
+    this.handleSearch = this.handleSearch.bind(this);
+  }
 
-  const handleSearch = () => {
+  handleSearch() {
+    const { memeData, setFilteredMemeData } = this.props;
     setFilteredMemeData(
       memeData.filter((meme) =>
-        meme.name.toLowerCase().includes(searchInputVal.toLowerCase())
+        meme.name
+          .toLowerCase()
+          .includes(this.state.searchInputVal.toLowerCase())
       )
     );
-  };
+  }
 
-  return (
-    <div>
-      <div className="d-flex flex-row justify-content-center mt-5">
-        <input
-          type="search"
-          className="form-control w-75 me-4"
-          placeholder="Search by Meme Name"
-          onChange={(e) => setSearchInputVal(e.target.value)}
-        />
-        <button className="btn btn-success" onClick={handleSearch}>
-          Search
-        </button>
+  render() {
+    return (
+      <div>
+        <div className="d-flex flex-row justify-content-center mt-5">
+          <input
+            type="search"
+            className="form-control w-75 me-4"
+            placeholder="Search by Meme Name"
+            onChange={(e) => this.setState({ searchInputVal: e.target.value })}
+          />
+          <button className="btn btn-success" onClick={this.handleSearch}>
+            Search
+          </button>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default SearchBar;

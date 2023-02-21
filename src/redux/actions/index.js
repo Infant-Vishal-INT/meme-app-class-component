@@ -17,3 +17,10 @@ export const deleteFavMeme = (meme) => {
     payload: meme,
   };
 };
+
+export const detailedPageMeme = (meme) => {
+  return {
+    type: "SETDETAILEDPAGEMEME",
+    payload: meme,
+  };
+};

@@ -1,69 +1,80 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { addFavMeme, deleteFavMeme } from "../redux/actions";
 import NavbarComponent from "../components/Navbar";
 import "../assets/css/memePage.css";
 
-const DetailedPage = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
+class DetailedPage extends Component {
+  constructor(props) {
+    super(props);
+    this.handleFavMemes = this.handleFavMemes.bind(this);
+    this.handleGoBack = this.handleGoBack.bind(this);
+  }
 
-  const { detailedMeme } = location.state || {};
-  const favMemeArr = useSelector((state) => state.favMemeReducer.favMemeArr);
-
-  const handleFavMemes = (e, meme) => {
+  handleFavMemes(e, meme) {
     e.preventDefault();
+    const { favMemeArr, dispatch } = this.props;
     if (favMemeArr.some((element) => element.id === meme.id)) {
       dispatch(deleteFavMeme(meme));
     } else {
       dispatch(addFavMeme(meme));
     }
-  };
+  }
 
-  const handleGoBack = (e) => {
-    e.preventDefault();
-    navigate(-1);
-  };
+  handleGoBack(e) {
+    window.location.replace("/memes");
+  }
 
-  return (
-    <div className="meme-page-bg">
-      <NavbarComponent />
-      <div>
-        <div
-          key={detailedMeme.id}
-          className="d-flex flex-row justify-content-center"
-        >
-          <div className="img-wrapper">
-            <img
-              src={detailedMeme.url}
-              alt={detailedMeme.name}
-              className="meme-img"
-            />
-            <div
-              type="button"
-              className="fav-wrapper"
-              onClick={(e) => handleFavMemes(e, detailedMeme)}
-            >
-              {favMemeArr.some((element) => element.id === detailedMeme.id) ? (
-                <AiFillHeart color="red" fontSize="2em" />
-              ) : (
-                <AiOutlineHeart color="white" fontSize="2em" />
-              )}
+  render() {
+    const { favMemeArr, detailedPageMeme } = this.props;
+
+    return (
+      <div className="meme-page-bg">
+        <NavbarComponent />
+        <div>
+          <div
+            key={detailedPageMeme.id}
+            className="d-flex flex-row justify-content-center"
+          >
+            <div className="img-wrapper">
+              <img
+                src={detailedPageMeme.url}
+                alt={detailedPageMeme.name}
+                className="meme-img"
+              />
+              <div
+                type="button"
+                className="fav-wrapper"
+                onClick={(e) => this.handleFavMemes(e, detailedPageMeme)}
+              >
+                {favMemeArr.some(
+                  (element) => element.id === detailedPageMeme.id
+                ) ? (
+                  <AiFillHeart color="red" fontSize="2em" />
+                ) : (
+                  <AiOutlineHeart color="white" fontSize="2em" />
+                )}
+              </div>
+              <div className="meme-name slide-up">{detailedPageMeme.name}</div>
             </div>
-            <div className="meme-name slide-up">{detailedMeme.name}</div>
+          </div>
+          <div className="d-flex flex-row justify-content-center">
+            <button className="btn btn-info mt-4" onClick={this.handleGoBack}>
+              Go back
+            </button>
           </div>
         </div>
-        <div className="d-flex flex-row justify-content-center">
-          <button className="btn btn-info mt-4" onClick={handleGoBack}>
-            Go back
-          </button>
-        </div>
       </div>
-    </div>
-  );
+    );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    favMemeArr: state.favMemeReducer.favMemeArr,
+    detailedPageMeme: state.favMemeReducer.detailedPageMeme,
+  };
 };
 
-export default DetailedPage;
+export default connect(mapStateToProps)(DetailedPage);

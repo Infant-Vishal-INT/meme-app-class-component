@@ -1,5 +1,6 @@
 const initialState = {
   favMemeArr: [],
+  detailedPageMeme: {},
 };
 
 const FavMemeReducer = (state = initialState, action) => {
@@ -15,6 +16,11 @@ const FavMemeReducer = (state = initialState, action) => {
         favMemeArr: [
           ...state.favMemeArr.filter((meme) => meme.id !== action.payload.id),
         ],
+      };
+    case "SETDETAILEDPAGEMEME":
+      return {
+        ...state,
+        detailedPageMeme: action.payload,
       };
     case "CLEARPERSISTEDDATA":
       return initialState;
