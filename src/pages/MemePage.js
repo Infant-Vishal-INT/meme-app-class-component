@@ -53,8 +53,6 @@ class MemePage extends Component {
   render() {
     const { loading, filteredMemeData } = this.state;
 
-    console.log("filteres meme", filteredMemeData);
-
     return (
       <div className="meme-page-bg">
         <ToastContainer />
