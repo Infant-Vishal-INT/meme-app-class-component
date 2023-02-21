@@ -11,13 +11,15 @@ class SearchBar extends Component {
 
   handleSearch() {
     const { memeData, setFilteredMemeData } = this.props;
-    setFilteredMemeData(
-      memeData.filter((meme) =>
-        meme.name
-          .toLowerCase()
-          .includes(this.state.searchInputVal.toLowerCase())
-      )
+    const searchResult = memeData.filter((meme) =>
+      meme.name.toLowerCase().includes(this.state.searchInputVal.toLowerCase())
     );
+
+    if (searchResult.length !== 0) {
+      setFilteredMemeData(searchResult);
+    } else {
+      setFilteredMemeData(["No data"]);
+    }
   }
 
   render() {

@@ -16,8 +16,6 @@ class MainRouter extends Component {
   render() {
     const isLogged = JSON.parse(localStorage.getItem("memePageLoggedIn"));
 
-    console.log("is logged", isLogged);
-
     return (
       <>
         <Routes>
